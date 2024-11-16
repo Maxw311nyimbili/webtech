@@ -1,6 +1,10 @@
 <?php
 require '../db/db_connection.php'; // Include database connection
 
+session_start();
+
+$loggedIn = isset($_SESSION['user_id']);
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get the input values
     $firstName = trim($_POST['firstName']);
@@ -84,19 +88,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <!-- Navigation Section -->
-    <header class="header">
-        <div><a href="../view/index.html"><img class="logo" src="../assets/images/logo.png" alt="website logo"></a></div>
-        <nav>
-            <div class="nav_links">
-                <ul class="menu-items">
-                    <li><a href="../index.php" class="menu-item">Home</a></li>
+
+<!-- Navigation Section -->
+<header class="header">
+    <!-- logo -->
+    <div><a href="../index.php"><img class="logo" src="../assets/images/logo.png" alt="website logo"></a></div>
+    <!-- End of logo -->
+
+    <!-- Hamburger -->
+    <div class="hamburger">
+        <div class="menu-btn">
+            <div class="menu-btn_lines"></div>
+        </div>
+    </div>
+    <!-- End of Hamburger -->
+
+    <!-- navigation links -->
+    <nav>
+        <div class="nav_links">
+            <ul class="menu-items">
+                <!-- Always show Home link -->
+                <li><a href="../index.php" class="menu-item" style="color: #E6003D;">Home</a></li>
+                
+                <!-- Show Dashboard link only if logged in -->
+                <?php if ($loggedIn): ?>
+                    <li><button class="sign-in-btn"><a href="./view/admin/dashboard.php" class="menu-item">Dashboard</a></button></li>
+                <?php else: ?>
+                    <!-- Show Login and Sign-in links only if not logged in -->
                     <li><a href="./login.php" class="menu-item">Login</a></li>
-                    <li><a href="./sign-in.php" class="menu-item" style="color: #E6003D;">Sign-in</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+                    <li><a href="./sign-in.php" class="menu-item">Sign-in</a></li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </nav>
+</header>
+<!-- End of Navigation section -->
+
+
+
+
+
+
     <!-- Sign-up Form -->
     <div class="container">
         <div class="banner-login"></div>

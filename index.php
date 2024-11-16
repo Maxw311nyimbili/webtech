@@ -5,7 +5,7 @@
     <title>Kitchen Link | Home</title>
     <link rel="stylesheet" href="./assets/css/index.css">
     <link rel="stylesheet" href="./assets/css/nav.css">
-    <script src="./assets/scripts/nav.js" defer></script>
+    <script src="./assets/js/nav.js" defer></script>
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -15,9 +15,8 @@
     <!-- Navigation Section -->
     <header class="header">
         <!-- logo -->
-        <div> <a href="./index.php"><img class="logo" src="./assets/images/logo.png" alt="website logo"></a></div>
+        <div><a href="./index.php"><img class="logo" src="./assets/images/logo.png" alt="website logo"></a></div>
         <!-- End of logo -->
-
 
         <!-- Hamburger -->
         <div class="hamburger">
@@ -26,22 +25,26 @@
             </div>
         </div>
         <!-- End of Hamburger -->
-        
-
 
         <!-- navigation links -->
         <nav>
             <div class="nav_links">
                 <ul class="menu-items">
-                  <li><a href="./index.php" class="menu-item" style="color: #E6003D;">Home</a></li>
-                  <li><a href="./view/login.php" class="menu-item">Login</a></li>
-                  <li><a href="./view/sign-in.php" class="menu-item">Sign-in</a></li>
-                  <li><button class="sign-in-btn"><a href="./view/admin/dashboard.php" class="menu-item">Dashboard</a></button></li>
+                    <!-- Always show Home link -->
+                    <li><a href="./index.php" class="menu-item" style="color: #E6003D;">Home</a></li>
+                    
+                    <!-- Show Dashboard link only if logged in -->
+                    <?php if ($loggedIn): ?>
+                        <li><button class="sign-in-btn"><a href="./view/admin/dashboard.php" class="menu-item">Dashboard</a></button></li>
+                    <?php else: ?>
+                        <!-- Show Login and Sign-in links only if not logged in -->
+                        <li><a href="./view/login.php" class="menu-item">Login</a></li>
+                        <li><a href="./view/sign-in.php" class="menu-item">Sign-in</a></li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </nav>
     </header>
-    
     <!-- End of Navigation section -->
 
 
