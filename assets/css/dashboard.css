@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+    scroll-behavior: smooth;
+}
+.header-content{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+.header-content a{
+    text-decoration: none;
+    color: #E6003D;
+}
+.header-content p{
+    margin-top: 10px;
+    font-weight: bolder;
+}
+.heading{
+    color: #E6003D;
+}
+.personal-container{
+    margin-left: 100px;
+}
+.personal-analytics-section{
+    margin-bottom: 10px;
+}
+.personal-analytics-section h2{
+    color: #E6003D;
+}
+.recipe-management-section h2, h3{
+    color: #E6003D;
+}
+.recipe-management-section h3{
+    margin-top: 20px;
+}
+.recipe-management-section li{
+    margin-top: 20px;
+    list-style: none;
+}
+
+table {
+    width: 70%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: #E6003D;
+    color: white;
+  }
+  
+  table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  table td button {
+    background-color: #e6003de8;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  table td button:hover {
+    background-color: #122331;
+    color: white;
+  }
+
+.analytics-section h2, h3{
+    color: #E6003D;
+}
+.user-management-section h2{
+    margin-top: 15px;
+    color: #E6003D;
+}
+.admin-container{
+    margin-left: 140px;
+}
+.recipe-overview li{
+    list-style: none;
+    margin-bottom: 10px;
+}
+.recipe-overview h2, h3{
+    color: #E6003D;
+    margin-bottom: 10px;
+}
+
+.recipe-overview{
+    margin-bottom: 30px;
+}

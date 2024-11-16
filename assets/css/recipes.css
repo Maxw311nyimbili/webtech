@@ -1,0 +1,407 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "DM Sans", sans-serif;
+}
+
+.heading{
+    color: #E6003D;
+    font-size: 45px;
+    margin-left: 15em;
+    margin-top: 10px;
+    animation: fade-up 1s;
+}
+.heading-1{
+    color: #E6003D;
+    font-size: 45px;
+    margin-left: 13em;
+    margin-top: 10px;
+}
+.search{
+    width: max-content;
+    display: flex;
+    align-items: center;
+    padding: 7px;
+    border-radius: 28px;
+    margin-top: 40px;
+    background: #ffffff;
+    border: #e6003dab solid 2px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    animation:fade-down 1s;
+}
+
+.search-container{
+  margin-left: 71.3em;
+}
+
+.search-input{
+    font-size: 16px;
+    font-family: 'Lexend', sans-serif;
+    color: #333333;
+    margin-left: 14px;
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 300px;
+}
+
+.search-input::placeholder, .search-icon{
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.section-container{
+    animation: fade-up 1s;
+    display: flex;
+    grid-template-columns: repeat(3, 1fr);
+}
+section .card{
+    width: 400px;
+    height: 450px;
+    margin-top: 40px;
+    margin-left: 100px;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    transition: all 0.5s ease-in;
+    cursor: pointer;
+
+}
+.card:hover{
+    box-shadow: #e6003d93 0px 0px 0px 3px;
+}
+
+section .card p, h1, .inner-section{
+    margin-top: 16px;
+    margin-left: 30px;
+}
+.card i{
+    color: #E6003D;
+}
+
+.general{
+    width: 400px;
+    height: 300px;
+    border-radius: 20px 20px 0 0 ;
+}
+section .banner-1{
+    background-image: linear-gradient(rgba(18, 35, 49, 0.21),rgba(18, 35, 49, 0.132)), url(../images/main-meal-1.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+section .banner-2{
+    background-image: linear-gradient(rgba(18, 35, 49, 0.21),rgba(18, 35, 49, 0.132)), url(../images/main-meal-2.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+section .banner-3{
+    background-image: linear-gradient(rgba(18, 35, 49, 0.21),rgba(18, 35, 49, 0.132)), url(../images/main-meal3.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+section .banner-4{
+    background-image: linear-gradient(rgba(18, 35, 49, 0.21),rgba(18, 35, 49, 0.132)), url(../images/soup-meal-1.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+section .banner-5{
+    background-image: linear-gradient(rgba(18, 35, 49, 0.21),rgba(18, 35, 49, 0.132)), url(../images/soup-meal-2.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+
+section .banner-6{
+    background-image: linear-gradient(rgba(18, 35, 49, 0.21),rgba(18, 35, 49, 0.132)), url(../images/soup-meal-3.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+section .banner-7{
+    background-image: linear-gradient(rgba(18, 35, 49, 0.21),rgba(18, 35, 49, 0.132)), url(../images/dessert-1.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+section .banner-8{
+    background-image: linear-gradient(rgba(18, 35, 49, 0.21),rgba(18, 35, 49, 0.132)), url(../images/dessert-2.png);
+    background-position: center;
+    background-size: cover;
+}
+
+
+section .banner-9{
+    background-image: linear-gradient(rgba(18, 35, 49, 0.21),rgba(18, 35, 49, 0.132)), url(../images/dessert-3.jpg);
+    background-position: center;
+    background-size: cover;
+}
+
+
+
+@media screen and (max-width: 1280px){
+    .heading{
+        color: #E6003D;
+        font-size: 40px;
+        margin-left: 13.5em;
+        margin-top: 0px;
+    }
+    .heading-1{
+        color: #E6003D;
+        font-size: 40px;
+        margin-left: 12em;
+        margin-top: 0px;
+    }
+
+    .section-container{
+        animation: fade-up 1s;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); 
+        margin-left: 80px;
+
+    }
+    .general{
+        width: 310px;
+        height: 240px;
+        border-radius: 20px 20px 0 0 ;
+    }
+    section .card{
+        width: 310px;
+        height: 400px;
+        margin-top: 20px;
+        margin-left: 40px;
+        border-radius: 20px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        transition: all 0.5s ease-in;
+        cursor: pointer;
+    }
+    .search{
+        margin-top: 0px;
+    }
+
+    .search-input{
+        width: 300px;
+    }
+    .search-container{
+        margin-top: 5em;
+        margin-left: 52.3em;
+        margin-bottom: 5em;
+      }
+}
+
+@media screen and (max-width: 1024px){
+    .heading{
+        color: #E6003D;
+        font-size: 45px;
+        margin-left: 8.5em;
+        margin-top: 10px;
+    }
+    .heading-1{
+        color: #E6003D;
+        font-size: 45px;
+        margin-left: 7em;
+        margin-top: 10px;
+    }
+
+    .section-container{
+        animation: fade-up 1s;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        margin-left: 80px;
+
+    }
+    .general{
+        width: 310px;
+        height: 300px;
+        border-radius: 20px 20px 0 0 ;
+    }
+    section .card{
+        width: 310px;
+        height: 450px;
+        margin-top: 40px;
+        margin-left: 40px;
+        border-radius: 20px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        transition: all 0.5s ease-in;
+        cursor: pointer;
+    }
+
+    .search-input{
+        width: 300px;
+    }
+    .search-container{
+        margin-top: 5em;
+        margin-left: 35.3em;
+        margin-bottom: 5em;
+      }
+}
+
+@media screen and (max-width: 970px){
+    
+    .heading{
+        color: #E6003D;
+        font-size: 45px;
+        margin-left: 1em;
+        margin-top: 10px;
+    }
+    .heading-1{
+        color: #E6003D;
+        font-size: 45px;
+        margin-left: 1em;
+        margin-top: 10px;
+    }
+
+    .section-container{
+        animation: fade-up 1s;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        margin-left: 20px;
+
+    }
+    .general{
+        width: 310px;
+        height: 300px;
+        border-radius: 20px 20px 0 0 ;
+    }
+    section .card{
+        width: 310px;
+        height: 450px;
+        margin-top: 40px;
+        margin-left: 40px;
+        border-radius: 20px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        transition: all 0.5s ease-in;
+        cursor: pointer;
+    }
+
+    .search-input{
+        width: 300px;
+    }
+    .search-container{
+        margin-top: 5em;
+        margin-left: 25.3em;
+        margin-bottom: 5em;
+      }
+}
+@media screen and (max-width: 768px){
+    
+    .heading{
+        color: #E6003D;
+        font-size: 45px;
+        margin-left: 1em;
+        margin-top: 10px;
+    }
+    .heading-1{
+        color: #E6003D;
+        font-size: 45px;
+        margin-left: 1em;
+        margin-top: 10px;
+    }
+
+    .section-container{
+        animation: fade-up 1s;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+
+    }
+    .general{
+        width: 310px;
+        height: 300px;
+        border-radius: 20px 20px 0 0 ;
+    }
+    section .card{
+        width: 310px;
+        height: 450px;
+        margin-top: 40px;
+        margin-left: 40px;
+        border-radius: 20px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        transition: all 0.5s ease-in;
+        cursor: pointer;
+    }
+
+    .search-input{
+        width: 200px;
+    }
+    .search-container{
+        margin-top: 5em;
+        margin-left: 30.3em;
+        margin-bottom: 5em;
+      }
+}
+
+
+@media screen and (max-width: 700px){
+    /* body{
+        background: green;
+    } */
+
+    .heading{
+        color: #E6003D;
+        font-size: 45px;
+        margin-left: 1em;
+        margin-top: 10px;
+    }
+    .heading-1{
+        color: #E6003D;
+        font-size: 45px;
+        margin-left: 1em;
+        margin-top: 10px;
+    }
+
+    .section-container{
+        animation: fade-up 1s;
+        display: block; 
+
+    }
+    .general{
+        width: 310px;
+        height: 300px;
+        border-radius: 20px 20px 0 0 ;
+    }
+    section .card{
+        width: 310px;
+        height: 450px;
+        margin-top: 40px;
+        margin-left: 40px;
+        border-radius: 20px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        transition: all 0.5s ease-in;
+        cursor: pointer;
+    }
+
+    .search-input{
+        width: 200px;
+    }
+    .search-container{
+        margin-top: 5em;
+        margin-left: 7.3em;
+        margin-bottom: 5em;
+      }
+}
+
+@keyframes fade-down {
+    0%{
+        opacity: 0;
+        transform: translateY(-30px) scale(0.9);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0px) scale(1);
+    }
+  }
+
+
+  @keyframes fade-up {
+    0%{
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0px) scale(1);
+    }
+  }

@@ -1,0 +1,415 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "DM Sans", sans-serif;
+}
+
+/* Table Styling */
+table {
+    width: 70%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: #E6003D;
+    color: white;
+  }
+  
+  table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+ 
+  
+  table td button {
+    background-color: #e6003de8;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  table td button:hover {
+    background-color: #122331;
+    color: white;
+  }
+
+
+  /* Modal CSS */
+  .modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.4); 
+    overflow: auto; 
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; 
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 1s ease-in-out;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    transition: all 1s ease-in-out;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-button {
+    padding: 10px 20px;
+    background-color: #E6003D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.modal-title{
+    color: #E6003D;
+    padding-bottom: 20px;
+}
+.submit-btn{
+    border: none;
+    padding: 10px 15px 10px 15px;
+    border-radius: 20px;
+    background: #122331;
+    color: white;
+    cursor: pointer;
+}
+input{
+    width: 350px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: #e6003daa solid 1.5px;
+    border-radius: 8px;
+}
+input:focus{
+    outline: none;
+    
+}
+
+.section-1, .section-2, .section-3{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    margin-bottom: 30px;
+}
+.section-2{
+    height: 20vh;
+}
+.section-4 textarea{
+    width: 45vw;
+    margin-bottom: 20px;
+}
+form, .modal-title{
+    margin-left: 13px;
+}
+
+textarea{
+    border: #e6003daa solid 1px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+textarea:focus{
+    outline: none;
+}
+
+.section-2 textarea{
+    width: 21vw;
+    margin-bottom: 20px;
+}
+#ingredient-list{
+    height: 10vw;
+}
+#allergies{
+    height: 7vw;
+}
+
+#countrySelect{
+    width: 350px;
+    border: #e6003daa solid 1.5px;
+    border-radius: 8px;
+    padding: 10px;
+}
+select:focus{
+    outline: none;
+}
+option{
+    width: 270px;
+}
+
+
+@media screen and (max-width:1280px){
+    table {
+        width: 70%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      
+      table th, table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      
+      table th {
+        background-color: #E6003D;
+        color: white;
+      }
+      
+      table tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      
+     
+      
+      table td button {
+        background-color: #e6003de8;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+      
+      table td button:hover {
+        background-color: #122331;
+        color: white;
+      }
+    
+    
+      /* Modal CSS */
+      .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 1; 
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%; 
+        background-color: rgba(0, 0, 0, 0.4); 
+        overflow: auto; 
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%; 
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 1s ease-in-out;
+    }
+    
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        transition: all 1s ease-in-out;
+    }
+    
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+    .modal-button {
+        padding: 10px 20px;
+        background-color: #E6003D;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+    
+    .modal-title{
+        color: #E6003D;
+        padding-bottom: 20px;
+    }
+    .submit-btn{
+        border: none;
+        padding: 10px 15px 10px 15px;
+        border-radius: 20px;
+        background: #122331;
+        color: white;
+        cursor: pointer;
+    }
+    input{
+        width: 270px;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: #e6003daa solid 1.5px;
+        border-radius: 8px;
+    }
+    input:focus{
+        outline: none;
+        
+    }
+
+    .section-1, .section-2, .section-3{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        margin-bottom: 20px;
+    }
+    .section-2{
+        height: 20vh;
+    }
+    .section-4 textarea{
+        width: 45vw;
+        margin-bottom: 20px;
+    }
+    form, .modal-title{
+        margin-left: 13px;
+    }
+
+    textarea{
+        border: #e6003daa solid 1px;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    .section-2 textarea{
+        width: 21vw;
+        margin-bottom: 20px;
+    }
+    #ingredient-list{
+        height: 13vw;
+    }
+    #allergies{
+        height: 8vw;
+    }
+
+    textarea:focus{
+        outline: none;
+    }
+    #countrySelect{
+        width: 270px;
+        border: #e6003daa solid 1.5px;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    select:focus{
+        outline: none;
+    }
+    option{
+        width: 270px;
+    }
+   
+}
+
+@media screen and (max-width: 1024px){
+    .modal-content {
+        background-color: #fefefe;
+        margin: 45% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%; /* Could be more or less, depending on screen size */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 1s ease-in-out;
+    }
+    input{
+        width: 450px;
+        padding: 5px;
+        border: #e6003daa solid 1.5px;
+        border-radius: 5px;
+    }
+}
+
+@media screen and (max-width: 970px){
+    .modal-content {
+        background-color: #fefefe;
+        margin: 45% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 65%; /* Could be more or less, depending on screen size */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 1s ease-in-out;
+    }
+    input{
+        width: 450px;
+        padding: 5px;
+        border: #e6003daa solid 1.5px;
+        border-radius: 5px;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .modal-content {
+        background-color: #fefefe;
+        margin: 45% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 65%; /* Could be more or less, depending on screen size */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 1s ease-in-out;
+    }
+    input{
+        width: 450px;
+        padding: 5px;
+        border: #e6003daa solid 1.5px;
+        border-radius: 5px;
+    }
+}
+
+@media screen and (max-width: 700px){
+    .modal-content {
+        background-color: #fefefe;
+        margin: 65% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 75%; /* Could be more or less, depending on screen size */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 1s ease-in-out;
+    }
+    input{
+        width: 250px;
+        padding: 5px;
+        border: #e6003daa solid 1.5px;
+        border-radius: 5px;
+    }
+}
+
