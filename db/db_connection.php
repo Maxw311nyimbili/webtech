@@ -82,8 +82,6 @@ if ($pdo -> connect_error)
     echo''. $pdo -> connect_error;
     die("Connection failed: " . $pdo->connect_error);
 }
-echo "Connection successful";
-
 // $servername = "169.239.251.102";
 // $username = "maxwell.nyimbili"; 
 // $password = "L3gendary1864"; 
