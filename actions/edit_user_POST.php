@@ -18,18 +18,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lname = isset($splitName[1]) ? $splitName[1] : '';  // If there's no last name, assign an empty string
 
     // Prepare the SQL query to update the user data
-    $query = $pdo->prepare("UPDATE users SET email = ?, fname = ?, lname = ? WHERE user_id = ?");
-    
-    // Execute the query with the sanitized inputs
-    $query->execute([$email, $fname, $lname, $userId]);
+    $query = "UPDATE users SET email = ?, fname = ?, lname = ? WHERE user_id = ?";
 
-    // Check if the update was successful
-    if ($query->rowCount() > 0) {
-        echo json_encode(['success' => true, 'message' => 'User updated successfully']);
+    // Prepare the statement
+    if ($stmt = $conn->prepare($query)) {
+        // Bind the parameters
+        $stmt->bind_param("sssi", $email, $fname, $lname, $userId);  // 'sssi' means string, string, string, integer
+
+        // Execute the statement
+        if ($stmt->execute()) {
+            // Check if any rows were updated
+            if ($stmt->affected_rows > 0) {
+                echo json_encode(['success' => true, 'message' => 'User updated successfully']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'No changes made or user not found']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error executing query']);
+        }
+
+        // Close the statement
+        $stmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => 'No changes made or user not found']);
+        echo json_encode(['success' => false, 'message' => 'Error preparing statement']);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
 }
+
 ?>

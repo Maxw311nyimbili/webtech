@@ -1,12 +1,12 @@
 <?php
-// Database connection with PDO
+// Database connection using MySQLi
 require '../db/db_connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Begin transaction
-        $pdo->beginTransaction();
-        
+        $conn->begin_transaction();
+
         // Step 1: Sanitize and validate inputs
         $recipeName = trim($_POST['recipe-name']);
         $firstName = trim($_POST['first-name']);
@@ -27,48 +27,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $imageDir = 'uploads/';
             $imageName = basename($_FILES['file']['name']);
             $imagePath = $imageDir . $imageName;
-            
+
             if (!is_dir($imageDir)) {
                 mkdir($imageDir, 0777, true);
             }
-            
+
             if (!move_uploaded_file($_FILES['file']['tmp_name'], $imagePath)) {
                 throw new Exception("Failed to upload the image.");
             }
         }
-        
+
         // Step 2: Fetch user ID
-        $stmt = $pdo->prepare("SELECT user_id FROM users WHERE LOWER(fname) = LOWER(:firstName) AND LOWER(lname) = LOWER(:lastName)");
-        $stmt->bindParam(':firstName', $firstName);
-        $stmt->bindParam(':lastName', $lastName);
+        $stmt = $conn->prepare("SELECT user_id FROM users WHERE LOWER(fname) = LOWER(?) AND LOWER(lname) = LOWER(?)");
+        $stmt->bind_param('ss', $firstName, $lastName);
         $stmt->execute();
-        
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$user) {
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 0) {
             throw new Exception("Author not found.");
         }
-        
+
+        $user = $result->fetch_assoc();
         $createdBy = $user['user_id'];
-        
+
         // Step 3: Insert into `foods`
-        $stmt = $pdo->prepare("
+        $stmt = $conn->prepare("
             INSERT INTO foods (name, origin, preparation_time, cooking_time, calories_per_serving, instructions, image_url, created_by, created_at) 
-            VALUES (:name, :origin, :prep_time, :cook_time, :calories, :instructions, :image_url, :created_by, :created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
-        $stmt->execute([
-            ':name' => $recipeName,
-            ':origin' => $country,
-            ':prep_time' => $prepTime,
-            ':cook_time' => $cookTime,
-            ':calories' => $calories,
-            ':instructions' => $instructions,
-            ':image_url' => $imagePath,
-            ':created_by' => $createdBy,
-            ':created_at' => $date
-        ]);
-        
-        $foodId = $pdo->lastInsertId();
-        
+        $stmt->bind_param('ssiiissis', $recipeName, $country, $prepTime, $cookTime, $calories, $instructions, $imagePath, $createdBy, $date);
+        $stmt->execute();
+
+        if ($stmt->affected_rows === 0) {
+            throw new Exception("Failed to insert recipe.");
+        }
+
+        $foodId = $conn->insert_id;
+
         // Step 4: Insert ingredients and link to recipe
         foreach ($ingredientList as $ingredient) {
             preg_match('/(?P<name>[^:]+):\s*(?P<quantity>[0-9.]+)\s*(?P<unit>[a-zA-Z]+)?\s*(?:\(optional\))?/', trim($ingredient), $matches);
@@ -77,77 +72,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $ingredientName = $matches['name'];
                 $quantity = $matches['quantity'];
                 $unit = isset($matches['unit']) ? $matches['unit'] : null;
-                $optional = isset($matches[0]) && strpos($matches[0], 'optional') !== false ? 1 : 0;
+                $optional = strpos($matches[0], 'optional') !== false ? 1 : 0;
 
-                // Log the parsed ingredient
-                error_log("Parsed ingredient: $ingredientName, Quantity: $quantity, Unit: $unit, Optional: $optional");
+                // Insert into `ingredients`
+                $stmt = $conn->prepare("
+                    INSERT INTO ingredients (name, origin, nutritional_value, allergen_info, shelf_life, created_at) 
+                    VALUES (?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->bind_param('ssisis', $ingredientName, $country, $calories, $allergies, $shelfLife, $date);
+                $stmt->execute();
+
+                $ingredientId = $mysqli->insert_id;
+
+                // Link ingredient to food via `recipes`
+                $stmt = $conn->prepare("
+                    INSERT INTO recipes (food_id, ingredient_id, quantity, unit, optional, created_at) 
+                    VALUES (?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->bind_param('iissis', $foodId, $ingredientId, $quantity, $unit, $optional, $date);
+                $stmt->execute();
             } else {
-                // Invalid format
                 error_log("Invalid ingredient format: $ingredient");
             }
-
-            // Insert into `ingredients`
-            $stmt = $pdo->prepare("
-                INSERT INTO ingredients (name, origin, nutritional_value, allergen_info, shelf_life, created_at) 
-                VALUES (:name, :origin, :nutritional_value, :allergen_info, :shelf_life, :created_at)
-            ");
-            $stmt->execute([
-                ':name' => $ingredientName,
-                ':origin' => $country,
-                ':nutritional_value' => $calories,
-                ':allergen_info' => $allergies,
-                ':shelf_life' => $shelfLife,
-                ':created_at' => $date
-            ]);
-            if ($stmt->errorInfo()[0] !== '00000') {
-                throw new Exception("Ingredient insertion failed: " . implode(", ", $stmt->errorInfo()));
-            }
-            
-            $ingredientId = $pdo->lastInsertId();
-            if (!$ingredientId) {
-                throw new Exception("Failed to insert ingredient: $ingredientName");
-            }
-
-            // Insert into `recipe`
-            $stmt = $pdo->prepare("
-                INSERT INTO recipes (food_id, ingredient_id, quantity, unit, optional, created_at) 
-                VALUES (:food_id, :ingredient_id, :quantity, :unit, :optional, :created_at)
-            ");
-            $stmt->execute([
-                ':food_id' => $foodId,
-                ':ingredient_id' => $ingredientId,
-                ':quantity' => $quantity,
-                ':unit' => $unit,
-                ':optional' => $optional,
-                ':created_at' => $date
-            ]);
-            if ($stmt->errorInfo()[0] !== '00000') {
-                throw new Exception("Recipe insertion failed: " . implode(", ", $stmt->errorInfo()));
-            }
         }
-        
-        // Commit the transaction
-        $pdo->commit();
-        // echo "Recipe added successfully!";
-        
+
+        // Commit transaction
+        $conn->commit();
+        echo "Recipe added successfully!";
     } catch (Exception $e) {
-        $pdo->rollBack();
+        $conn->rollback();
         error_log($e->getMessage());
         echo "Transaction failed: " . $e->getMessage();
     }
 }
 
-
-
 // Fetch recipes from the database
-$stmt = $pdo->prepare("SELECT foods.food_id, foods.name, foods.origin, foods.preparation_time, foods.cooking_time, foods.calories_per_serving, foods.instructions, foods.image_url, foods.created_at, users.fname, users.lname
-FROM foods
-JOIN users ON foods.created_by = users.user_id
-ORDER BY foods.created_at DESC");
+$stmt = $conn->prepare("
+    SELECT foods.food_id, foods.name, foods.origin, foods.preparation_time, foods.cooking_time, foods.calories_per_serving, foods.instructions, foods.image_url, foods.created_at, users.fname, users.lname
+    FROM foods
+    JOIN users ON foods.created_by = users.user_id
+    ORDER BY foods.created_at DESC
+");
 $stmt->execute();
-$recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+$result = $stmt->get_result();
+$recipes = $result->fetch_all(MYSQLI_ASSOC);
 ?>
+
 
 
 <!DOCTYPE html>

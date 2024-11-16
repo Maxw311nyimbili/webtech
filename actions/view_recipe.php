@@ -1,11 +1,15 @@
 <?php
 require '../db/db_connection.php';
 
+// Ensure the response is JSON
+header('Content-Type: application/json');
+
+// Check if 'id' is passed in the URL
 if (isset($_GET['id'])) {
-    $foodId = $_GET['id'];
+    $foodId = intval($_GET['id']); // Sanitize input
 
     // Prepare the query to fetch food details, including associated ingredients and recipe data
-    $stmt = $pdo->prepare("
+    $query = "
         SELECT 
             f.food_id, f.name AS food_name, f.origin, f.type, f.is_healthy, f.instructions, f.description, 
             f.preparation_time, f.cooking_time, f.serving_size, f.calories_per_serving, f.image_url,
@@ -14,20 +18,32 @@ if (isset($_GET['id'])) {
         FROM foods f
         LEFT JOIN recipes r ON r.food_id = f.food_id
         LEFT JOIN ingredients i ON i.ingredient_id = r.ingredient_id
-        WHERE f.food_id = :food_id
-    ");
-    $stmt->bindParam(':food_id', $foodId);
-    $stmt->execute();
+        WHERE f.food_id = ?
+    ";
 
-    // Fetch the recipe data, which will include the food details and its ingredients
-    $recipe = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Prepare the statement
+    if ($stmt = $conn->prepare($query)) {
+        // Bind the parameter
+        $stmt->bind_param("i", $foodId);  // 'i' indicates the parameter is an integer
 
-    if ($recipe) {
-        echo json_encode(['success' => true, 'recipe' => $recipe]);
+        // Execute the query
+        $stmt->execute();
+
+        // Get the result
+        $result = $stmt->get_result();
+
+        // Fetch the data
+        if ($result->num_rows > 0) {
+            $recipe = $result->fetch_all(MYSQLI_ASSOC);
+            echo json_encode(['success' => true, 'recipe' => $recipe]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Recipe not found']);
+        }
+
+        // Close the statement
+        $stmt->close();
     } else {
-        echo json_encode(['success' => false, 'message' => 'Recipe not found']);
+        echo json_encode(['success' => false, 'message' => 'Error preparing statement']);
     }
 }
 ?>
-
-

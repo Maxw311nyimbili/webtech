@@ -5,30 +5,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     parse_str(file_get_contents("php://input"), $data);
     $foodId = $data['id'];
 
-    try {
-        // Begin a transaction to ensure all deletions are handled safely
-        $pdo->beginTransaction();
+    // Ensure the response is JSON
+    header('Content-Type: application/json');
 
+    // Start a transaction
+    $conn->begin_transaction();
+
+    try {
         // First, delete from the recipes table (if any associated recipes exist)
-        $stmt = $pdo->prepare("DELETE FROM recipes WHERE food_id = :food_id");
-        $stmt->bindParam(':food_id', $foodId);
+        $stmt = $conn->prepare("DELETE FROM recipes WHERE food_id = ?");
+        $stmt->bind_param("i", $foodId);
         $stmt->execute();
+        $stmt->close();
 
         // Next, delete from the foods table
-        $stmt = $pdo->prepare("DELETE FROM foods WHERE food_id = :food_id");
-        $stmt->bindParam(':food_id', $foodId);
+        $stmt = $conn->prepare("DELETE FROM foods WHERE food_id = ?");
+        $stmt->bind_param("i", $foodId);
         $stmt->execute();
+        $stmt->close();
 
         // Commit the transaction
-        $pdo->commit();
+        $conn->commit();
 
         echo json_encode(['success' => true, 'message' => 'Recipe deleted successfully']);
     } catch (Exception $e) {
         // Rollback the transaction if something goes wrong
-        $pdo->rollBack();
+        $conn->rollback();
 
         echo json_encode(['success' => false, 'message' => 'Failed to delete recipe: ' . $e->getMessage()]);
     }
+
 }
 ?>
+
 

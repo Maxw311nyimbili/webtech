@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
-    $role = intval($_POST['role']); // Get the role as an integer
+    $role = intval($_POST['role']);
 
     // Initialize an array for error messages
     $errors = [];
@@ -31,11 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Check for existing email
-    $query = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-    $query->execute([$email]);
-    if ($query->fetch()) {
+    $stmt = $mysqli->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
         $errors[] = "Email already in use.";
     }
+    $stmt->close();
 
     // If there are errors, display them and stop further execution
     if (!empty($errors)) {
@@ -51,20 +54,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Set timestamps
     $createdAt = $updatedAt = date("Y-m-d H:i:s");
 
-    try {
-        echo "inserting!!!";
-        // Insert user data into database
-        $query = $pdo->prepare("INSERT INTO users (fname, lname, email, password, role, created_at, updated_at) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $query->execute([$firstName, $lastName, $email, $hashedPassword, $role, $createdAt, $updatedAt]);
+    // Insert user data into database
+    $stmt = $mysqli->prepare("INSERT INTO users (fname, lname, email, password, role, created_at, updated_at) 
+                              VALUES (?, ?, ?, ?, ?, ?, ?)");
+    if ($stmt) {
+        $stmt->bind_param('ssssiss', $firstName, $lastName, $email, $hashedPassword, $role, $createdAt, $updatedAt);
 
-        // Redirect to dashboard.php after successful registration
-        header("Location: login.php");
-        exit;  // Make sure the script stops after the redirect
-
-    } catch (PDOException $e) {
-        // Log the error message in production (do not show it to users)
-        echo "<p style='color: red;'>An error occurred. Please try again later.</p>";
+        if ($stmt->execute()) {
+            // Redirect to login.php after successful registration
+            header("Location: login.php");
+            exit;
+        } else {
+            echo "<p style='color: red;'>An error occurred while inserting data. Please try again later.</p>";
+        }
+        $stmt->close();
+    } else {
+        echo "<p style='color: red;'>Failed to prepare the SQL statement.</p>";
     }
 }
 ?>

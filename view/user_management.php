@@ -1,27 +1,32 @@
 <?php
 require '../db/db_connection.php';
 
-
 if (isset($_GET['id'])) {
     $userId = intval($_GET['id']);
-    
-    try {
-        $query = $pdo->prepare("SELECT user_id, CONCAT(fname, ' ', lname) AS name, email FROM users WHERE user_id = ?");
-        $query->execute([$userId]);
-        $user = $query->fetch(PDO::FETCH_ASSOC);
-        
+
+    // Prepare the query using MySQLi
+    $stmt = $conn->prepare("SELECT user_id, CONCAT(fname, ' ', lname) AS name, email FROM users WHERE user_id = ?");
+    if ($stmt) {
+        $stmt->bind_param('i', $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
         if ($user) {
             echo json_encode(['success' => true, 'user' => $user]);
         } else {
             echo json_encode(['success' => false, 'message' => 'User not found']);
         }
-    } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+
+        $stmt->close();
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Failed to prepare SQL statement']);
     }
 } else {
-    // echo json_encode(['success' => false, 'message' => 'Invalid request']);
+    echo json_encode(['success' => false, 'message' => 'Invalid request']);
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -85,11 +90,11 @@ if (isset($_GET['id'])) {
                     </thead>
                     <tbody>
                         <?php
-                            $query = $pdo->query("SELECT user_id, CONCAT(fname, ' ', lname) AS name, email FROM users");
-                            $result = $query->fetchAll(PDO::FETCH_ASSOC); // Fetch all rows as associative array
-                            
-                            if (count($result) > 0) {
-                                foreach ($result as $row) {
+                            $query = "SELECT user_id, CONCAT(fname, ' ', lname) AS name, email FROM users";
+                            $result = $conn->query($query);
+
+                            if ($result && $result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
                                     echo "<tr>
                                             <td>{$row['user_id']}</td>
                                             <td>{$row['name']}</td>
@@ -99,7 +104,7 @@ if (isset($_GET['id'])) {
                                                 <button onclick='editUser({$row['user_id']})'>Edit</button>
                                                 <button onclick='deleteUser({$row['user_id']})'>Delete</button>
                                             </td>
-                                            </tr>";
+                                        </tr>";
                                 }
                             } else {
                                 echo "<tr><td colspan='4'>No users found.</td></tr>";

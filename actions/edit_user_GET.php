@@ -12,15 +12,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $userId = intval($_GET['id']);  // Sanitize the ID
 
         // Prepare the query to fetch the user data
-        $query = $pdo->prepare("SELECT user_id, CONCAT(fname, ' ', lname) AS name, email FROM users WHERE user_id = ?");
-        $query->execute([$userId]);
+        $query = "SELECT user_id, CONCAT(fname, ' ', lname) AS name, email FROM users WHERE user_id = ?";
 
-        // Check if user data was found
-        if ($query->rowCount() > 0) {
-            $user = $query->fetch(PDO::FETCH_ASSOC);
-            echo json_encode(['success' => true, 'user' => $user]);
+        // Prepare the statement
+        if ($stmt = $conn->prepare($query)) {
+            // Bind the parameter
+            $stmt->bind_param("i", $userId);  // 'i' means integer
+
+            // Execute the statement
+            $stmt->execute();
+
+            // Get the result
+            $result = $stmt->get_result();
+
+            // Check if user data was found
+            if ($result->num_rows > 0) {
+                $user = $result->fetch_assoc();
+                echo json_encode(['success' => true, 'user' => $user]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'User not found']);
+            }
+
+            // Close the statement
+            $stmt->close();
         } else {
-            echo json_encode(['success' => false, 'message' => 'User not found']);
+            echo json_encode(['success' => false, 'message' => 'Error preparing statement']);
         }
     } else {
         echo json_encode(['success' => false, 'message' => 'User ID is required']);
@@ -29,4 +45,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
 }
 ?>
+
 

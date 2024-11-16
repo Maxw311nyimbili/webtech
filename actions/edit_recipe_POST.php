@@ -12,19 +12,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Update recipe details
     $query = "
         UPDATE recipes 
-        SET food_id = :food_id, ingredient_id = :ingredient_id, quantity = :quantity, unit = :unit, optional = :optional
-        WHERE recipe_id = :recipe_id
+        SET food_id = ?, ingredient_id = ?, quantity = ?, unit = ?, optional = ?
+        WHERE recipe_id = ?
     ";
 
     // Prepare the statement
-    if ($stmt = $pdo->prepare($query)) {
+    if ($stmt = $mysqli->prepare($query)) {
         // Bind parameters
-        $stmt->bindParam(':food_id', $food_id, PDO::PARAM_INT);
-        $stmt->bindParam(':ingredient_id', $ingredient_id, PDO::PARAM_INT);
-        $stmt->bindParam(':quantity', $quantity, PDO::PARAM_STR); // Assuming quantity is a decimal or string
-        $stmt->bindParam(':unit', $unit, PDO::PARAM_STR);
-        $stmt->bindParam(':optional', $optional, PDO::PARAM_INT); // Assuming optional is an integer (boolean)
-        $stmt->bindParam(':recipe_id', $recipe_id, PDO::PARAM_INT);
+        $stmt->bind_param("iiissi", $food_id, $ingredient_id, $quantity, $unit, $optional, $recipe_id); 
 
         // Execute the statement and handle success/error
         if ($stmt->execute()) {
@@ -32,9 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo json_encode(['success' => false, 'message' => 'Error updating recipe']);
         }
+
+        $stmt->close(); // Close the statement
     } else {
         echo json_encode(['success' => false, 'message' => 'Error preparing statement']);
     }
 }
 ?>
-

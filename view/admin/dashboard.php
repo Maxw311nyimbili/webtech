@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'C:/xampp/htdocs/web-Lab-2/RECIPE/db/db_connection.php';
+require_once '../../db/db_connection.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -24,53 +24,62 @@ $users = [];
 $recentRecipes = [];
 $myRecipes = [];
 
-
 $limit = 5; // For recently added recipes and users
-
 
 // Fetch data based on user role
 if ($userRole == 1) { // Super Admin
     // Fetch analytics data
-    $query = $pdo->query("SELECT COUNT(*) AS total_users FROM users");
-    $totalUsers = $query->fetch()['total_users'];
+    $query = $conn->query("SELECT COUNT(*) AS total_users FROM users");
+    $row = $query->fetch_assoc();
+    $totalUsers = $row['total_users'];
 
-    $query = $pdo->query("SELECT COUNT(*) AS total_recipes FROM recipes");
-    $totalRecipes = $query->fetch()['total_recipes'];
+    $query = $conn->query("SELECT COUNT(*) AS total_recipes FROM recipes");
+    $row = $query->fetch_assoc();
+    $totalRecipes = $row['total_recipes'];
 
-    $query = $pdo->query("SELECT COUNT(*) AS pending_approvals FROM foods WHERE is_approved = 'pending'");
-    $pendingApprovals = $query->fetch()['pending_approvals'];
+    $query = $conn->query("SELECT COUNT(*) AS pending_approvals FROM foods WHERE is_approved = 'pending'");
+    $row = $query->fetch_assoc();
+    $pendingApprovals = $row['pending_approvals'];
 
     // Fetch user data for User Management with pagination
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $offset = ($page - 1) * $limit;
 
-    $query = $pdo->prepare("SELECT user_id, CONCAT(fname, ' ', lname) AS full_name, email, role, created_at FROM users LIMIT ?, ?");
-    $query->execute([$offset, $limit]);
-    $users = $query->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $conn->prepare("SELECT user_id, CONCAT(fname, ' ', lname) AS full_name, email, role, created_at FROM users LIMIT ?, ?");
+    $stmt->bind_param('ii', $offset, $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $users = $result->fetch_all(MYSQLI_ASSOC);
 
     // Fetch recently added recipes
-    $query = $pdo->query("SELECT * FROM foods ORDER BY created_at DESC LIMIT $limit");
-    $recentRecipes = $query->fetchAll(PDO::FETCH_ASSOC);
+    $query = $conn->query("SELECT * FROM foods ORDER BY created_at DESC LIMIT $limit");
+    $recentRecipes = $query->fetch_all(MYSQLI_ASSOC);
 
 } elseif ($userRole == 2) { // Regular Admin
 
     // Fetch total recipes created by the user from the foods table
-    $query = $pdo->prepare("SELECT COUNT(*) AS total_recipes FROM foods WHERE created_by = ?");
-    $query->execute([$userId]);
-    $totalRecipes = $query->fetch()['total_recipes'];
+    $stmt = $conn->prepare("SELECT COUNT(*) AS total_recipes FROM foods WHERE created_by = ?");
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $totalRecipes = $row['total_recipes'];
 
     // Fetch recent food items added by the user (limit to the latest 5)
-    $query = $pdo->prepare("SELECT * FROM foods WHERE created_by = ? ORDER BY created_at DESC LIMIT ?");
-    $query->execute([$userId, $limit]);
-    $recentRecipes = $query->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $conn->prepare("SELECT * FROM foods WHERE created_by = ? ORDER BY created_at DESC LIMIT ?");
+    $stmt->bind_param('ii', $userId, $limit);
+    $stmt->execute();
+    $recentRecipes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
     // Fetch all food items created by the user for management (with a limit for large data sets)
-    $query = $pdo->prepare("SELECT * FROM foods WHERE created_by = ? LIMIT ?");
-    $query->execute([$userId, $limit]);
-    $myRecipes = $query->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $conn->prepare("SELECT * FROM foods WHERE created_by = ? LIMIT ?");
+    $stmt->bind_param('ii', $userId, $limit);
+    $stmt->execute();
+    $myRecipes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

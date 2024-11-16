@@ -15,9 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Check credentials in the database
-    $query = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-    $query->execute([$email]);
-    $user = $query->fetch();
+    $query = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    $query->bind_param("s", $email);
+    $query->execute();
+    $result = $query->get_result();
+    $user = $result->fetch_assoc();
 
     if ($user && password_verify($password, $user['password'])) {
         // Successful login, set session variables
@@ -32,8 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         echo "Invalid email or password.";
     }
+
+    // Free result set and close the statement
+    $result->free();
+    $query->close();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
