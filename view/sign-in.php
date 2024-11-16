@@ -8,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
-    $role = intval($_POST['role']);
 
     // Initialize an array for error messages
     $errors = [];
@@ -24,10 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($password !== $confirmPassword) {
         $errors[] = "Passwords do not match.";
-    }
-
-    if ($role !== 1 && $role !== 2) {
-        $errors[] = "Invalid role selected.";
     }
 
     // Check for existing email
@@ -54,6 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Set timestamps
     $createdAt = $updatedAt = date("Y-m-d H:i:s");
 
+    // Assign default role (2 = Regular user)
+    $role = 2;
+
     // Insert user data into database
     $stmt = $conn->prepare("INSERT INTO users (fname, lname, email, password, role, created_at, updated_at) 
                               VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -74,8 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="../assets/css/nav.css">
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- <script src="../assets/js/sign-up.js" defer></script> -->
 </head>
 <body>
     <!-- Navigation Section -->
@@ -111,7 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             
             <div class="inner-container">
-
                 <form id="registerForm" method="POST" action="sign-in.php">
                     <div><input class="input_area" type="text" id="firstName" name="firstName" placeholder="First Name" required></div>
                     <div id="firstNameError" class="error-message"></div>
@@ -128,22 +122,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div><input class="input_area" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required></div>
                     <div id="confirmPasswordError" class="error-message"></div>
 
-                    <!-- Role Selection -->
-                    <div>
-                        <label for="role">Select Role:</label>
-                        <select name="role" id="role" required>
-                            <!-- Super Admin -->
-                            <option value="1">Admin</option>
+                    <!-- Role Selection removed, Default role set to Regular user (2) -->
 
-                            <!-- Regular Admin -->
-                            <option value="2">Regular user</option>
-                        </select>
-                    </div>
-
-                    <div><button class = "submit_btn" type="submit">Submit</button></div>
+                    <div><button class="submit_btn" type="submit">Submit</button></div>
                     <div class="create"><p>Already have an account?</p> <a href="./login.php">Login</a></div>
                 </form>
-
             </div>
         </div>
     </div>
