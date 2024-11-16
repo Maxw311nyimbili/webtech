@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Check for existing email
-    $stmt = $mysqli->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->bind_param('s', $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $createdAt = $updatedAt = date("Y-m-d H:i:s");
 
     // Insert user data into database
-    $stmt = $mysqli->prepare("INSERT INTO users (fname, lname, email, password, role, created_at, updated_at) 
+    $stmt = $conn->prepare("INSERT INTO users (fname, lname, email, password, role, created_at, updated_at) 
                               VALUES (?, ?, ?, ?, ?, ?, ?)");
     if ($stmt) {
         $stmt->bind_param('ssssiss', $firstName, $lastName, $email, $hashedPassword, $role, $createdAt, $updatedAt);
