@@ -109,15 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <ul class="menu-items">
                 <!-- Always show Home link -->
                 <li><a href="../index.php" class="menu-item" style="color: #E6003D;">Home</a></li>
-                
-                <!-- Show Dashboard link only if logged in -->
-                <?php if ($loggedIn): ?>
-                    <li><button class="sign-in-btn"><a href="./view/admin/dashboard.php" class="menu-item">Dashboard</a></button></li>
-                <?php else: ?>
-                    <!-- Show Login and Sign-in links only if not logged in -->
-                    <li><a href="./login.php" class="menu-item">Login</a></li>
-                    <li><a href="./sign-in.php" class="menu-item">Sign-in</a></li>
-                <?php endif; ?>
+                <li><a href="./login.php" class="menu-item">Login</a></li>
+                <li><a href="./sign-in.php" class="menu-item">Sign-in</a></li>
             </ul>
         </div>
     </nav>
