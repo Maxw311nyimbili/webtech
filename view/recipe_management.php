@@ -209,7 +209,7 @@ $recipes = $result->fetch_all(MYSQLI_ASSOC);
                 <span class="close" id="closeModal">&times;</span> <!-- Close button -->
 
                 <h2 class="modal-title">Add a New Recipe</h2>
-                <form id="create-recipe-form" enctype="multipart/form-data" method="POST" action="recipe.php">
+                <form id="create-recipe-form" enctype="multipart/form-data" method="POST" action="recipe_management.php">
                     <!-- Recipe Form Fields -->
                     <div class="section-1">
                         <div><input type="text" name="recipe-name" id="recipe-name" placeholder="Enter recipe title" required></div>
@@ -246,7 +246,7 @@ $recipes = $result->fetch_all(MYSQLI_ASSOC);
                         <div><input type="number" name="cook-time" id="cook-time" placeholder="Cook time (in minutes)" required></div>
                         <div><input type="number" name="calories" id="calories" placeholder="Calories per serving" required></div>
 
-                        <div><textarea name="instructions" id="instructions" style="resize: none;" placeholder="Instructions" required></textarea></div>
+                        <div><textarea name="instructions" id="instructions" style="resize: none;" width = "30vw" placeholder="Instructions" required></textarea></div>
                     </div>
 
                     <div class="form-btns">
