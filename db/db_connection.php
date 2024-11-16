@@ -74,13 +74,13 @@ $port = "3341";
 // $db_name = 'AC2024';
 
 // Attempt to connect to the database
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
+$pdo = new mysqli($servername, $username, $password, $dbname, $port);
 
 // Check connection
-if ($conn -> connect_error) 
+if ($pdo -> connect_error) 
 {
-    echo''. $conn -> connect_error;
-    die("Connection failed: " . $conn->connect_error);
+    echo''. $pdo -> connect_error;
+    die("Connection failed: " . $pdo->connect_error);
 }
 echo "Connection successful";
 
