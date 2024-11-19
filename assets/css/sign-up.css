@@ -266,7 +266,7 @@ p{
     }
     
     .heading{
-        
+        margin-left: 100px;
         font-weight: bolder;
         font-size: 25px;
         text-align: center;
@@ -396,16 +396,8 @@ p{
         cursor: pointer;
     }
 }
-/* @media screen and (max-width: 1280px){
-    .container{
-        margin-left:31em;
-    }
-    .back-home{
-        margin-top: 120px;
-        margin-left: 10px;
-    }
-}
-@media screen and (max-width: 1024px){
+
+/* @media screen and (max-width: 1024px){
 
     .container{
         margin-left:21em;
