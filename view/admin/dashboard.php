@@ -115,7 +115,7 @@ if ($userRole == 1) { // Super Admin
         <nav>
             <div class="nav_links">
                 <ul class="menu-items">
-                    <li><a href="../../index.php" class="menu-item" style="color: #E6003D;">Home</a></li>
+                    <li><a href="../../index.php" class="menu-item">Home</a></li>
 
                     <?php if (!isset($_SESSION['user_id'])): ?>
                         <li><a href="../login.php" class="menu-item">Login</a></li>
