@@ -1,3 +1,9 @@
+
+<?php
+session_start();
+// Check if user is logged in
+$loggedIn = isset($_SESSION['user_id']);
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -56,7 +62,7 @@
                 <h1>Discover Your Next Favorite <span>Recipe!</span></h1>
             </div>
             <div class="lower-text">
-                <p>Unlock the secrets of mouthwatering dishes with easy recipes and expert tips. No matter your skill level, your next meal will be a hit.</p>
+                <p><strong>Unlock the secrets of mouthwatering dishes with easy recipes and expert tips. No matter your skill level, your next meal will be a hit.</strong></p>
             </div>
 
 

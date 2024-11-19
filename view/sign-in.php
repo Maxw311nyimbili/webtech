@@ -104,16 +104,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- End of Hamburger -->
 
     <!-- navigation links -->
-    <nav>
-        <div class="nav_links">
-            <ul class="menu-items">
-                <!-- Always show Home link -->
-                <li><a href="../index.php" class="menu-item" style="color: #E6003D;">Home</a></li>
-                <li><a href="./login.php" class="menu-item">Login</a></li>
-                <li><a href="./sign-in.php" class="menu-item">Sign-in</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php
+        session_start(); // Start the session
+
+        // Check if the user is logged in
+        $loggedIn = isset($_SESSION['user_id']);
+    ?>
+
+        <nav>
+            <div class="nav_links">
+                <ul class="menu-items">
+                    <!-- Always show Home link -->
+                    <li><a href="../index.php" class="menu-item" >Home</a></li>
+                    
+                    <?php if ($loggedIn): ?>
+                        <!-- Show Dashboard link if logged in -->
+                        <li><a href="./admin/dashboard.php" class="menu-item">Dashboard</a></li>
+                        <li><a href="./logout.php" class="menu-item">Logout</a></li>
+                    <?php else: ?>
+                        <!-- Show Login and Sign-in links if not logged in -->
+                        <li><a href="./login.php" class="menu-item">Login</a></li>
+                        <li><a href="./sign-in.php" class="menu-item"  style="color: #E6003D;">Sign-in</a></li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </nav>
+
 </header>
 <!-- End of Navigation section -->
 
