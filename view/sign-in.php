@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Kitchen Link | Sign-up</title>
     <link rel="stylesheet" href="../assets/css/sign-up.css">
     <link rel="stylesheet" href="../assets/css/nav.css">
-    <script src="../assets/js/recipe.js" defer></script>
+    <!-- <script src="../assets/js/recipe.js" defer></script> -->
     <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
